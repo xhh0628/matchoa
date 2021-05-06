@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<div th:insert="~{pageStatic :: staticHead}"></div>
+<title>信息管理系统</title>
+
+<style>
+	.alt td{ background:black !important;}
+</style>
+</head>
+<body>
+	<form id="submitForm" name="submitForm" action="" method="post">
+		<input type="hidden" name="allIDCheck" value="" id="allIDCheck"/>
+		<input type="hidden" name="fangyuanEntity.fyXqName" value="" id="fyXqName"/>
+		<div id="container">
+			<div class="ui_content">
+				<div class="ui_text_indent">
+					<div id="box_border">
+						<div id="box_top">搜索</div>
+						<div id="box_center">
+							场地
+							<select name="fangyuanEntity.fyXqCode" id="fyXq" class="ui_select01" onchange="getFyDhListByFyXqCode();">
+                                <option value="">--请选择--</option>
+                                <option value="场地1">场地1</option>
+                                <option value="场地2">场地2</option>
+                                <option value="场地3">场地3</option>
+                            </select>
+
+							负责裁判员
+							<select name="fangyuanEntity.fyDhCode" id="fyDh" class="ui_select01">
+                                <option value="">--请选择--</option>
+								<option value="场地1">张三</option>
+								<option value="场地2">李四</option>
+								<option value="场地3">王五</option>
+                            </select>
+
+
+							选手姓名&nbsp;&nbsp;<input type="text" id="fyZldz" name="fangyuanEntity.fyZldz" class="ui_input_txt02" />
+						</div>
+						<div id="box_bottom">
+							<input type="button" value="查询" class="ui_input_btn01" onclick="search();" /> 
+						<!--	<input type="button" value="新增" class="ui_input_btn01" id="addBtn" />
+							<input type="button" value="删除" class="ui_input_btn01" onclick="batchDel();" /> 
+							<input type="button" value="导入" class="ui_input_btn01" id="importBtn" />
+							<input type="button" value="导出" class="ui_input_btn01" onclick="exportExcel();" />-->
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="ui_content">
+				<div class="ui_tb">
+					<table class="table" cellspacing="0" cellpadding="0" width="100%" align="center" border="0">
+						<tr>
+							<th width="30"><input type="checkbox" id="all" onclick="selectOrClearAllCheckbox(this);" />
+							</th>
+							<th>场馆</th>
+							<th>场地</th>
+							<th>负责裁判</th>
+							<th>比赛项目</th>
+							<th>比赛选手</th>
+							<th>比赛选手</th>
+							<th>计分</th>
+
+						</tr>
+							<tr>
+								<td><input type="checkbox" name="IDCheck" value="14458579642011" class="acb" /></td>
+								<td>场馆AAA</td>
+								<td>1</td>
+								<td>张三</td>
+								<td>太极拳</td>
+								<td>选手1号</td>
+								<td>选手2号</td>
+
+								<td>
+									<a href="javascript:void(0)" onclick="editScore('1')" class="edit">编辑</a>
+								</td>
+							</tr>
+
+
+
+
+
+					</table>
+				</div>
+				<div class="ui_tb_h30">
+					<div class="ui_flt" style="height: 30px; line-height: 30px;">
+						共有
+						<span class="ui_txt_bold04">1</span>
+						条记录，当前第
+						<span class="ui_txt_bold04">1
+						/
+						1</span>
+						页
+					</div>
+					<div class="ui_frt">
+						<!--    如果是第一页，则只显示下一页、尾页 -->
+						
+							<input type="button" value="首页" class="ui_input_btn01" />
+							<input type="button" value="上一页" class="ui_input_btn01" />
+							<input type="button" value="下一页" class="ui_input_btn01"
+								onclick="jumpNormalPage(2);" />
+							<input type="button" value="尾页" class="ui_input_btn01"
+								onclick="jumpNormalPage(9);" />
+						
+						
+						
+						<!--     如果是最后一页，则只显示首页、上一页 -->
+						
+						转到第<input type="text" id="jumpNumTxt" class="ui_input_txt01" />页
+							 <input type="button" class="ui_input_btn01" value="跳转" onclick="jumpInputPage(9);" />
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+<div style="display:none"><script src='http://v7.cnzz.com/stat.php?id=155540&web_id=155540' language='JavaScript' charset='gb2312'></script></div>
+
+	<script type="text/javascript">
+
+
+		/** 模糊查询来电用户  **/
+		function search(){
+			$("#submitForm").attr("action", "house_list.html?page=" + 1).submit();
+		}
+
+
+		/** 普通跳转 **/
+		function jumpNormalPage(page){
+			$("#submitForm").attr("action", "house_list.html?page=" + page).submit();
+		}
+
+		/** 输入页跳转 **/
+		function jumpInputPage(totalPage){
+			// 如果“跳转页数”不为空
+			if($("#jumpNumTxt").val() != ''){
+				var pageNum = parseInt($("#jumpNumTxt").val());
+				// 如果跳转页数在不合理范围内，则置为1
+				if(pageNum<1 | pageNum>totalPage){
+					art.dialog({icon:'error', title:'友情提示', drag:false, resize:false, content:'请输入合适的页数，\n自动为您跳到首页', ok:true,});
+					pageNum = 1;
+				}
+				$("#submitForm").attr("action", "house_list.html?page=" + pageNum).submit();
+			}else{
+				// “跳转页数”为空
+				art.dialog({icon:'error', title:'友情提示', drag:false, resize:false, content:'请输入合适的页数，\n自动为您跳到首页', ok:true,});
+				$("#submitForm").attr("action", "house_list.html?page=" + 1).submit();
+			}
+		}
+	</script>
+
+	<script>
+		function editScore(id){
+			debugger;
+
+
+
+		}
+	</script>
+
+
+</body>
+</html>
