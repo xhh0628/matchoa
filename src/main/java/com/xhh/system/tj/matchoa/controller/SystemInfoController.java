@@ -10,6 +10,6 @@ public class SystemInfoController {
     @RequestMapping("/introduce.html")
     private String systemVer(){
 
-        return "introduce";
+        return "introduce";//介绍页
     }
 }

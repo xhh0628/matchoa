@@ -11,6 +11,6 @@ public class MatchScoreController {
     @RequestMapping("martialArt.html")
     private String score(){
 
-        return "matchScore";
+        return "matchScore";//分页
     }
 }

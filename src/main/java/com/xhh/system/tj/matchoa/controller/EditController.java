@@ -10,6 +10,6 @@ public class EditController {
     @RequestMapping("/score.html")
     private String editScore(String id){
 
-        return "editScore";
+        return "editScore";//编辑得分页
     }
 }
